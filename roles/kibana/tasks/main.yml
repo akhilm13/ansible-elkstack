@@ -1,0 +1,31 @@
+---
+#
+# Installing Kibana
+#
+#
+#Install Kibana
+- name: Update repositories cache and install Kibana
+  become: yes
+  yum:
+   name: kibana
+   state: present
+#Update kibana config file to set it to localhost
+- name: Updating config file of Kibana make access to localhost
+  become: yes
+  lineinfile:
+   destfile: /etc/kibana/kibana.yml
+   regexp: 'server.host:'
+   line: 'server.host: localhost'
+#Enable Kibana service
+- name: Enalbing Kibana service using systemd
+  become: yes
+  systemd: 
+   name: kibana
+   enabled: yes
+   daemon_reload: yes
+#Start Kibana Service
+- name: Starting Kibana Service
+  become: yes
+  systemd:
+   name: kibana
+   state: started

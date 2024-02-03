@@ -1,0 +1,39 @@
+---
+#
+#Installing Logstash
+#
+#
+- name: Install Logstash
+  become: yes
+  yum:
+   name: logstash
+   state: present
+
+#Configuring beats input module 01-beats-input.conf
+- name: Configuring beats input module
+  become: yes
+  template: 
+   src=beats-input.conf.j2
+   dest=/etc/logstash/conf.d/02-beats-input.conf
+#Configuring the Logstash filters 02-log-filter.conf
+- name: Configure Logstash filters
+  become: yes
+  template: 
+   src=log-filter.conf.j2
+   dest=/etc/logstash/conf.d/02-log-filter.conf
+#Configuring the logstash output file 10-log-output.conf
+- name: Configuring the logstash output file 
+  become: yes
+  template: 
+   src=log-output.conf.j2
+   dest=/etc/logstash/10-log-output.conf
+#Start Logstash service
+- name: Starting Logstash service
+  become: yes
+  systemd:
+   name: logstash
+   state: started
+
+
+  
+

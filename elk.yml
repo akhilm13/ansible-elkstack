@@ -1,0 +1,15 @@
+---
+#
+#Playbook to install the ELK stack
+#
+- name: Install ElK Server
+  hosts: elk
+  user: root
+  roles:
+  - { role: elasticsearch, es_instance_name: "elk" }
+  - { role: kibana }
+  - { role: nginx }
+  - { role: logstash }
+  vars:
+   es_plugins:
+    - plugin: ingest-geoip   
